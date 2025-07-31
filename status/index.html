@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Eagle Status</title>
+  <style>
+    body {
+      background-color: #000;
+      color: gold;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 30px;
+    }
+
+    .monitor-box {
+      background: #111;
+      border: 2px solid gold;
+      border-radius: 12px;
+      box-shadow: 0 0 20px gold;
+      padding: 25px;
+      margin: auto;
+      max-width: 700px;
+      text-align: left;
+    }
+
+    .monitor-box h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .monitor-box p {
+      font-size: 1.1rem;
+      margin: 6px 0;
+    }
+
+    .response-time-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+
+    .response-time-table th,
+    .response-time-table td {
+      border: 1px solid gold;
+      padding: 8px;
+      text-align: center;
+    }
+
+    
+    .footer {
+      margin-top: 40px;
+      color: #888;
+      font-size: 0.85rem;
+    }
+    p {
+        color: #FFE135;
+    }
+    strong {
+        color: gold;
+    }
+  </style>
+</head>
+<body>
+  <h1>🦅 Eagle Status</h1>
+  <div class="monitor-box" id="monitor-content">
+    <p>Loading Status</p>
+  </div>
+
+  
+
+  <script>
+    const API_KEY = 'c8a46fd82dacb012a3d0b918e69a4ce9';
+    const API_URL = `https://api.hetrixtools.com/v3/uptime-monitors`;
+
+    function formatUptime(seconds) {
+      const weeks = Math.floor(seconds / (7 * 24 * 60 * 60));
+      seconds %= 7 * 24 * 60 * 60;
+      const days = Math.floor(seconds / (24 * 60 * 60));
+      seconds %= 24 * 60 * 60;
+      const hours = Math.floor(seconds / 3600);
+      seconds %= 3600;
+      const minutes = Math.floor(seconds / 60);
+      seconds = Math.floor(seconds % 60);
+
+      return `${weeks} week(s) ${days} day(s) ${hours} hour(s) ${minutes} minute(s) ${seconds} second(s)`;
+    }
+
+    async function fetchMonitorData() {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${API_KEY}`,
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json();
+        const monitor = data.monitors[0];
+        const content = document.getElementById('monitor-content');
+
+        const uptime = parseFloat(monitor.uptime).toFixed(2);
+        const downtime = (100 - uptime).toFixed(2);
+
+
+
+        const status = monitor.uptime_status === 'up' ? '🟢 ONLINE' : '🔴 OFFLINE';
+
+        const now = Math.floor(Date.now() / 1000);
+        const lastChange = monitor.last_status_change;
+        const uptimeDuration = formatUptime(now - lastChange);
+
+        let locationsTable = `
+          <table class="response-time-table">
+            <thead>
+              <tr><th>Location</th><th>Status</th><th>Response Time (ms)</th></tr>
+            </thead>
+            <tbody>
+        `;
+
+        for (const [loc, info] of Object.entries(monitor.locations)) {
+          locationsTable += `
+            <tr>
+              <td>${loc.charAt(0).toUpperCase() + loc.slice(1)}</td>
+              <td class="${info.uptime_status === 'up' ? 'status-up' : 'status-down'}">${info.uptime_status.toUpperCase()}</td>
+              <td>${info.response_time}</td>
+            </tr>
+          `;
+        }
+
+        locationsTable += '</tbody></table>';
+
+        content.innerHTML = `
+          
+          
+          <p><strong>📶 Status:</strong> ${status}</p>
+          <br>
+          <p><strong>✅ Uptime:</strong> ${uptime}%</p>
+          <br>
+          <p><strong>❌ Downtime:</strong> ${downtime}%</p>
+          <br>
+          
+          <p><strong>⏱ Uptime Duration:</strong> ${uptimeDuration}</p>
+          <br>
+          <p><strong>📅 Last Checked:</strong> ${new Date(monitor.last_check * 1000).toLocaleString()}</p>
+          
+
+
+        `;
+      } catch (error) {
+        document.getElementById('monitor-content').innerHTML = '<p>❌ Error loading monitor data. Please try again later.</p>';
+      }
+    }
+
+    fetchMonitorData();
+  </script>
+</body>
+</html>
