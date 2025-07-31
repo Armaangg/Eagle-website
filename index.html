@@ -33,7 +33,7 @@
       margin-bottom: 2rem;
     }
 
-    a {
+    button {
       display: inline-block;
       padding: 0.9em 1.7em;
       background-color: gold;
@@ -44,6 +44,7 @@
       font-size: clamp(1rem, 2.5vw, 1.25rem);
       transition: background-color 0.3s ease;
       cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, pointer;
+      z-index: 99;
     }
 
     a:hover {
@@ -54,6 +55,80 @@
 <body>
   <h1>Eagle 🦅</h1>
   <p>See Eagle Live Status By Clicking Below Button</p>
-  <a href="/status">Eagle Live Status</a>
+  <button id="statusbtn" onclick="statusbtn">Eagle Live Status</a>
+  <script>
+document.getElementById("statusbtn").addEventListener("click", function () {
+    const gifContainer = document.createElement("div");
+    gifContainer.style.position = "fixed";
+    gifContainer.style.top = "35%";
+    gifContainer.style.left = "30%";
+    gifContainer.style.transform = "translate(-50%, -50%)";
+    gifContainer.style.transform = "scale(1.5)";
+    gifContainer.style.pointerEvents = "none"; // Make unclickable
+    gifContainer.style.zIndex = "9";
+
+    const gif = document.createElement("img");
+    gif.src = "https://i.ibb.co/rRWnfjXX/New-Project-60-27068-C5.gif";
+    gif.style.pointerEvents = "none"; // Also make image itself unclickable
+    gifContainer.appendChild(gif);
+    document.body.appendChild(gifContainer);
+
+    setTimeout(() => {
+        window.location.href = "/status";
+    }, 5000);
+});
+</script>
+<script>
+(function () {
+  let img;
+  let offset = 30; // half of image width/height (100px)
+
+  function createImage(x, y) {
+    if (!img) {
+      img = document.createElement("img");
+      img.src = "https://i.ibb.co/sdSGJS3s/IMG-20250731-210746.png";
+      img.style.position = "fixed";
+      img.style.width = "100px";
+      img.style.height = "100px";
+      img.style.zIndex = "9999";
+      img.style.pointerEvents = "none";
+      document.body.appendChild(img);
+    }
+    moveImage(x, y);
+  }
+
+  function moveImage(x, y) {
+    if (img) {
+      img.style.left = (x - offset) + "px";
+      img.style.top = (y - offset) + "px";
+    }
+  }
+
+  function startTouch(e) {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      createImage(touch.clientX, touch.clientY);
+    }
+  }
+
+  function moveTouch(e) {
+    if (img && e.touches.length > 0) {
+      const touch = e.touches[0];
+      moveImage(touch.clientX, touch.clientY);
+    }
+  }
+
+  function endTouch() {
+    if (img) {
+      img.remove();
+      img = null;
+    }
+  }
+
+  document.addEventListener("touchstart", startTouch, { passive: false });
+  document.addEventListener("touchmove", moveTouch, { passive: false });
+  document.addEventListener("touchend", endTouch);
+})();
+</script>
 </body>
 </html>
