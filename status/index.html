@@ -291,52 +291,56 @@
   </script>
 <script>
 (function () {
-  const offset = 50;
-  let animationFrame = null;
+  let img;
+  let offset = 30; // half of image width/height (100px)
 
-  // Create the image once on page load
-  const img = document.createElement("img");
-  img.src = "https://i.ibb.co/sdSGJS3s/IMG-20250731-210746.png";
-  img.style.position = "fixed";
-  img.style.width = "100px";
-  img.style.height = "100px";
-  img.style.zIndex = "9999";
-  img.style.pointerEvents = "none";
-  img.style.display = "none";
-  document.body.appendChild(img);
+  function createImage(x, y) {
+    if (!img) {
+      img = document.createElement("img");
+      img.src = "https://i.ibb.co/sdSGJS3s/IMG-20250731-210746.png";
+      img.style.position = "fixed";
+      img.style.width = "100px";
+      img.style.height = "100px";
+      img.style.zIndex = "9999";
+      img.style.pointerEvents = "none";
+      document.body.appendChild(img);
+    }
+    moveImage(x, y);
+  }
 
   function moveImage(x, y) {
-    img.style.left = (x - offset) + "px";
-    img.style.top = (y - offset) + "px";
+    if (img) {
+      img.style.left = (x - offset) + "px";
+      img.style.top = (y - offset) + "px";
+    }
   }
 
   function startTouch(e) {
     if (e.touches.length > 0) {
       const touch = e.touches[0];
-      img.style.display = "block";
-      moveImage(touch.clientX, touch.clientY);
+      createImage(touch.clientX, touch.clientY);
     }
   }
 
   function moveTouch(e) {
-    if (e.touches.length === 0) return;
-    const touch = e.touches[0];
-    if (animationFrame) cancelAnimationFrame(animationFrame);
-    animationFrame = requestAnimationFrame(() => {
+    if (img && e.touches.length > 0) {
+      const touch = e.touches[0];
       moveImage(touch.clientX, touch.clientY);
-    });
+    }
   }
 
   function endTouch() {
-    img.style.display = "none";
+    if (img) {
+      img.remove();
+      img = null;
+    }
   }
 
-  document.addEventListener("touchstart", startTouch, { passive: true });
-  document.addEventListener("touchmove", moveTouch, { passive: true });
-  document.addEventListener("touchend", endTouch, { passive: true });
+  document.addEventListener("touchstart", startTouch, { passive: false });
+  document.addEventListener("touchmove", moveTouch, { passive: false });
+  document.addEventListener("touchend", endTouch);
 })();
-</script>
-<script>
+</script><script>
   function toggleMenu() {
     const menu = document.getElementById('menu');
     menu.style.right = menu.style.right === '0px' ? '-250px' : '0px';
