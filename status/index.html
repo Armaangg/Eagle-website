@@ -237,6 +237,8 @@
 
 
         const status = monitor.uptime_status === 'up' ? '🟢 ONLINE' : '🔴 OFFLINE';
+        const status2 = monitor.uptime_status === 'up' ? 'Uptine' : 'Downtime';
+        
 
         const now = Math.floor(Date.now() / 1000);
         const lastChange = monitor.last_status_change;
@@ -272,7 +274,7 @@
           <p><strong>❌ Downtime:</strong> ${downtime}%</p>
           <br>
           
-          <p><strong>⏱ Uptime Duration:</strong> ${uptimeDuration}</p>
+          <p><strong>⏱ ${status2} Duration:</strong> ${uptimeDuration}</p>
           <br>
           <p><strong>📅 Last Checked:</strong> ${new Date(monitor.last_check * 1000).toLocaleString()}</p>
           
@@ -286,56 +288,51 @@
 
     fetchMonitorData();
   </script>
-  <script>
+<script>
 (function () {
-  let img;
-  let offset = 30; // half of image width/height (100px)
+  const offset = 50;
+  let animationFrame = null;
 
-  function createImage(x, y) {
-    if (!img) {
-      img = document.createElement("img");
-      img.src = "https://i.ibb.co/sdSGJS3s/IMG-20250731-210746.png";
-      img.style.position = "fixed";
-      img.style.width = "100px";
-      img.style.height = "100px";
-      img.style.zIndex = "9999";
-      img.style.pointerEvents = "none";
-      document.body.appendChild(img);
-    }
-    moveImage(x, y);
-  }
+  // Create the image once on page load
+  const img = document.createElement("img");
+  img.src = "https://i.ibb.co/sdSGJS3s/IMG-20250731-210746.png";
+  img.style.position = "fixed";
+  img.style.width = "100px";
+  img.style.height = "100px";
+  img.style.zIndex = "9999";
+  img.style.pointerEvents = "none";
+  img.style.display = "none";
+  document.body.appendChild(img);
 
   function moveImage(x, y) {
-    if (img) {
-      img.style.left = (x - offset) + "px";
-      img.style.top = (y - offset) + "px";
-    }
+    img.style.left = (x - offset) + "px";
+    img.style.top = (y - offset) + "px";
   }
 
   function startTouch(e) {
     if (e.touches.length > 0) {
       const touch = e.touches[0];
-      createImage(touch.clientX, touch.clientY);
-    }
-  }
-
-  function moveTouch(e) {
-    if (img && e.touches.length > 0) {
-      const touch = e.touches[0];
+      img.style.display = "block";
       moveImage(touch.clientX, touch.clientY);
     }
   }
 
-  function endTouch() {
-    if (img) {
-      img.remove();
-      img = null;
-    }
+  function moveTouch(e) {
+    if (e.touches.length === 0) return;
+    const touch = e.touches[0];
+    if (animationFrame) cancelAnimationFrame(animationFrame);
+    animationFrame = requestAnimationFrame(() => {
+      moveImage(touch.clientX, touch.clientY);
+    });
   }
 
-  document.addEventListener("touchstart", startTouch, { passive: false });
-  document.addEventListener("touchmove", moveTouch, { passive: false });
-  document.addEventListener("touchend", endTouch);
+  function endTouch() {
+    img.style.display = "none";
+  }
+
+  document.addEventListener("touchstart", startTouch, { passive: true });
+  document.addEventListener("touchmove", moveTouch, { passive: true });
+  document.addEventListener("touchend", endTouch, { passive: true });
 })();
 </script>
 <script>
