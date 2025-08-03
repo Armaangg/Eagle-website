@@ -190,7 +190,8 @@
 
 <div class="sidemenu" id="menu">
     <br>
-  <button onclick="homebtn()">Home</button>
+  <button onclick="btn('/')">Home</button>
+  <button onclick="btn('/invite')">Invite</button>
   <button style="box-shadow: 0 0 10px gold;">Status</button>
 </div>
     <img class="img" src="https://i.ibb.co/sf7YQpM/New-Project-62-CE20679.png" alt="EAGLE LOGO">
@@ -201,7 +202,7 @@
 
   
 
-  <script>
+  <script>    
     const API_KEY = 'c8a46fd82dacb012a3d0b918e69a4ce9';
     const API_URL = `https://api.hetrixtools.com/v3/uptime-monitors`;
 
@@ -292,7 +293,9 @@
 <script>
 (function () {
   let img;
-  let offset = 30; // half of image width/height (100px)
+  let offset = 50; // Half of 100px image size
+  let isMoving = false;
+  let lastX = 0, lastY = 0;
 
   function createImage(x, y) {
     if (!img) {
@@ -303,15 +306,26 @@
       img.style.height = "100px";
       img.style.zIndex = "9999";
       img.style.pointerEvents = "none";
+      img.style.transition = "transform 0s"; // no delay
+      img.style.left = "0px";  // Initial anchor
+      img.style.top = "0px";
       document.body.appendChild(img);
     }
-    moveImage(x, y);
+    updateImagePosition(x, y);
   }
 
-  function moveImage(x, y) {
-    if (img) {
-      img.style.left = (x - offset) + "px";
-      img.style.top = (y - offset) + "px";
+  function updateImagePosition(x, y) {
+    lastX = x - offset;
+    lastY = y - offset;
+
+    if (!isMoving) {
+      isMoving = true;
+      requestAnimationFrame(() => {
+        if (img) {
+          img.style.transform = `translate(${lastX}px, ${lastY}px)`;
+        }
+        isMoving = false;
+      });
     }
   }
 
@@ -323,10 +337,10 @@
   }
 
   function moveTouch(e) {
-    if (img && e.touches.length > 0) {
-      const touch = e.touches[0];
-      moveImage(touch.clientX, touch.clientY);
-    }
+    if (!img || e.touches.length !== 1) return;
+
+    const touch = e.touches[0];
+    updateImagePosition(touch.clientX, touch.clientY);
   }
 
   function endTouch() {
@@ -336,18 +350,19 @@
     }
   }
 
-  document.addEventListener("touchstart", startTouch, { passive: false });
-  document.addEventListener("touchmove", moveTouch, { passive: false });
-  document.addEventListener("touchend", endTouch);
+  document.addEventListener("touchstart", startTouch, { passive: true });
+  document.addEventListener("touchmove", moveTouch, { passive: true });
+  document.addEventListener("touchend", endTouch, { passive: true });
 })();
-</script><script>
+</script>
+<script>
   function toggleMenu() {
     const menu = document.getElementById('menu');
     menu.style.right = menu.style.right === '0px' ? '-250px' : '0px';
   }
 </script>
 <script>
-function homebtn() {
+function btn(url) {
       const gifContainer = document.createElement("div");
       gifContainer.style.position = "fixed";
       gifContainer.style.top = "10%";
@@ -364,7 +379,7 @@ function homebtn() {
       document.body.appendChild(gifContainer);
 
       setTimeout(() => {
-        window.location.href = "/";
+        window.location.href = url;
       }, 5000);
     }
   </script>
