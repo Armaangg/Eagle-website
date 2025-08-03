@@ -144,7 +144,7 @@
 <br>
 <br>
 <h1>Invite Eagle</h1>
-<p>Used in <span id="servers"></span>+ servers</p>
+<p>Used in <span id="servers">many</span> servers</p>
 <h5>Invite Eagle Now!</h5>
     <button onclick="btn('https://discord.com/oauth2/authorize?client_id=1333783139667017761')">Invite Eagle</button>
     
@@ -248,9 +248,7 @@ async function fetchServerCount() {
   try {
     const response = await fetch(url, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json"
-      }
+
     });
 
     if (!response.ok) throw new Error("Failed to fetch server count");
