@@ -243,14 +243,12 @@ function btn(url) {
 </script>
 <script>
 async function fetchServerCount() {
-  const url = "https://top.gg/api/bots/1333783139667017761/stats";
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEzMzM3ODMxMzk2NjcwMTc3NjEiLCJib3QiOnRydWUsImlhdCI6MTczODU0Njc0NH0.DB5EG2TfcA8OEVH-sy_DDo8cTxSIlRQlDEGNviWe-YM";
+  const url = "https://eagle.armaanop589.workers.dev/";
 
   try {
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Authorization": token,
         "Content-Type": "application/json"
       }
     });
