@@ -259,7 +259,7 @@ async function fetchServerCount() {
     document.getElementById("servers").innerText = data.server_count || "N/A";
   } catch (error) {
     console.error("Error fetching server count:", error);
-    document.getElementById("servers").innerText = "Error";
+    document.getElementById("servers").innerText = "many";
   }
 }
 
