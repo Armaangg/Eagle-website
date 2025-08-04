@@ -1,56 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta charset="UTF-8">
-  
-  <title>Eagle - Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eagle - Live Chat</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
       background-color: black;
-      color: gold;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 70vh;
-      padding: 5vw;
-      font-family: 'Segoe UI', sans-serif;
-      text-align: center;
-      cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, auto;
-      padding-top: 80px;
     }
-
     h1 {
-      font-size: clamp(2rem, 5vw, 4rem);
-      margin-bottom: 1rem;
+        z-index: 99;
+    }
+    
+
+    .iframe-wrapper {
+      width: 100%;
+      height: 93%;
+      overflow: hidden;
+      position: relative;
     }
 
-    p {
-      font-size: clamp(1rem, 3vw, 1.5rem);
-      max-width: 90%;
-      margin-bottom: 2rem;
-    }
+    iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: calc(100% + 30px); /* Extend beyond visible area */
+      border: none;
 
-    button {
-      display: inline-block;
-      padding: 0.9em 1.7em;
-      background-color: gold;
-      color: black;
-      text-decoration: none;
-      border-radius: 0.5em;
-      font-weight: bold;
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      transition: background-color 0.3s ease;
-      cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, pointer;
-      z-index: 8;
-    }
-
-    a:hover {
-      background-color: #e6c200;
     }
     .img{
         pointer-events: none;
@@ -148,7 +129,34 @@
 span {
     color: gold;
 }
-
+button {
+      display: inline-block;
+      padding: 0.9em 1.7em;
+      background-color: gold;
+      color: black;
+      text-decoration: none;
+      border-radius: 0.5em;
+      font-weight: bold;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      transition: background-color 0.3s ease;
+      cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, pointer;
+      z-index: 8;
+    }
+    h1.loading {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      background: rgba(0, 0, 0, 0.8);
+      padding: 20px 40px;
+      border: 2px solid gold;
+      border-radius: 10px;
+      z-index: 9999;
+      font-size: 2rem;
+      font-family: sans-serif;
+    }
+    
   </style>
 </head>
 <body>
@@ -162,23 +170,26 @@ span {
 
 <div class="sidemenu" id="menu">
     <br>
-  <button style="box-shadow: 0 0 10px gold;">Home</button>
+  <button onclick="btn('/')">Home</button>
   <button onclick="btn('/invite')">Invite</button>
   <button onclick="btn('/status')">Status</button>
   <button onclick="btn('/support')">Support</button>
 </div>
-    <img class="img" src="https://i.ibb.co/sf7YQpM/New-Project-62-CE20679.png" alt="EAGLE LOGO">
-  <h1>Eagle</h1>
-  <br>
-  <button onclick="btn('/status')">Eagle Live Status</button>
-  <br>
-  <button onclick="btn('/invite')">Invite Eagle!</button>
 <br>
-  <button onclick="btn('/support')">Support</button>
-  
-
-
-<script>
+<br>
+<br>
+<h1 class="loading" id="loading">Loading...</h1>
+  <div class="iframe-wrapper">
+      
+    <iframe 
+      src="https://widget.yourgpt.ai/ed99d612-78ba-49a5-bc87-c6b0c57006d7" 
+      title="Live Chat"
+      allowfullscreen
+      onload="setTimeout(() => { document.getElementById('loading').style.display = 'none'; }, 1000);">            >
+    </iframe>
+    
+  </div>
+  <script>
 function btn(url) {
       const gifContainer = document.createElement("div");
       gifContainer.style.position = "fixed";
@@ -200,6 +211,12 @@ function btn(url) {
       }, 5000);
     }
   </script>
+  <script>
+  function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.style.right = menu.style.right === '0px' ? '-250px' : '0px';
+  }
+</script>
 <script>
 (function () {
   let img;
@@ -214,7 +231,7 @@ function btn(url) {
       img.style.position = "fixed";
       img.style.width = "100px";
       img.style.height = "100px";
-      img.style.zIndex = "9999";
+      img.style.zIndex = "99999999";
       img.style.pointerEvents = "none";
       img.style.transition = "transform 0s"; // no delay
       img.style.left = "0px";  // Initial anchor
@@ -264,12 +281,6 @@ function btn(url) {
   document.addEventListener("touchmove", moveTouch, { passive: true });
   document.addEventListener("touchend", endTouch, { passive: true });
 })();
-</script>
-<script>
-  function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.style.right = menu.style.right === '0px' ? '-250px' : '0px';
-  }
 </script>
 
 </body>
