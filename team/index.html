@@ -1,11 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eagle - Support</title>
-    <style>
-        body {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    #team {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      padding: 20px;
+      background: #111;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background: #1e1e1e;
+      border-radius: 15px;
+      padding: 20px;
+      color: white;
+      width: 220px;
+      text-align: center;
+      box-shadow: 0 0 10px #000;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid gold;
+      box-shadow: 0 0 15px gold;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .display-name {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: gold;
+    }
+
+    .username {
+      font-size: 0.95em;
+      color: #ccc;
+    }
+
+    .userid {
+      font-size: 0.8em;
+      color: #888;
+    }
+    body {
       background-color: black;
       color: gold;
       display: flex;
@@ -127,7 +175,8 @@ button {
       cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, pointer;
       z-index: 8;
     }
-    </style>
+    
+  </style>
 </head>
 <body>
     <div class="topbar">
@@ -143,18 +192,47 @@ button {
   <button onclick="btn('/')">Home</button>
   <button onclick="btn('/invite')">Invite</button>
   <button onclick="btn('/status')">Status</button>
-  <button style="box-shadow: 0 0 20px gold;">Support</button>
-  <button onclick="btn('/team')">Team</button>
+  <button onclick="btn('/support')">Support</button>
+  <button style="box-shadow: 0 0 20px gold;">Team</button>
 </div>
-<img class="img" src="https://i.ibb.co/sf7YQpM/New-Project-62-CE20679.png" alt="EAGLE LOGO">
-  <h1>Eagle</h1>
-  <button onclick="btn('https://discord.gg/aSErH4KjnT')">Discord Server</button>
-  <br>
-  <button onclick="btn('/support/live')">Live Chat </button>
-  <br>
-  <button onclick="btn('/team')">Team</button>
+  <div id="team">
+      <h1>Owner/Developer</h1>
+    <div id="803114661678940190"></div>
     
-    <script>
+  </div>
+
+  <script>
+    async function loadMember(id) {
+      try {
+        const res = await fetch(`https://armaannnn.pythonanywhere.com/status?id=${id}`);
+        const data = await res.json();
+
+        const container = document.getElementById(id);
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <img src="${data.avatar}" class="avatar" alt="Avatar" />
+          <div class="display-name">${data.display_name}</div>
+          <div class="username">@${data.username}</div>
+          <div class="userid">ID: ${id}</div>
+        `;
+
+        container.appendChild(card);
+      } catch (e) {
+        console.error("Error loading user:", id, e);
+      }
+    }
+
+    // Add all user IDs here
+    const ids = [
+      "803114661678940190"
+    ];
+
+    ids.forEach(loadMember);
+  </script>
+  <script>
 (function () {
   let img;
   let offset = 50; // Half of 100px image size
