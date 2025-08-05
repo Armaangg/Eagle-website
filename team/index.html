@@ -204,7 +204,7 @@ button {
   <script>
     async function loadMember(id) {
       try {
-        const res = await fetch(`https://armaannnn.pythonanywhere.com/status?id=${id}`);
+        const res = await fetch(`https://eagle2.armaanop589.workers.dev/status?id=${id}`);
         const data = await res.json();
 
         const container = document.getElementById(id);
@@ -213,7 +213,7 @@ button {
         card.className = "card";
 
         card.innerHTML = `
-          <img src="${data.avatar}" class="avatar" alt="Avatar" />
+          <img src="${data.avatar_url}" class="avatar" alt="Avatar" />
           <div class="display-name">${data.display_name}</div>
           <div class="username">@${data.username}</div>
           <div class="userid">ID: ${id}</div>
