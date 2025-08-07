@@ -1,0 +1,55 @@
+{
+  "General": {
+    "ping": "Check the bot's latency.",
+    "info": "Get info about the bot and prefix.",
+    "afk": "Set your afk status",
+    "userinfo": "Get the info about user's profile",
+    "leaderboard": "Get the server leaderboard",
+    "accage": "Get the age of user's account",
+    "gend": "Manually end a giveaway",
+    "gstart": "Start a giveaway",
+    "greroll": "Reroll a ended giveaway",
+    "avatar": "Gets someone avatar",
+    "banner": "View nitro user's banner",
+    "cmdperm": "See which commands you can use",
+    "perm": "See which permissions the user has in the server",
+    "claimtime": "Configure claim time after giveaway end",
+    "mc": "See member count",
+    "timer": "Start a timer",
+    "welcomer": "Setup the welcomer (only without embed working till now)",
+    "leaver": "Setup the leave message (only without embed working till now)",
+    "statusrole": "Make the bot automatically remove or add role by checking text in status or bio",
+    "dmall": "Dm All The Users In The Server."
+  },
+  "Moderation": {
+    "ban": "Ban a user from the server.",
+    "unban": "Unban a user from the server.",
+    "kick": "Kick a user from the server.",
+    "timeout": "Timeout a user.",
+    "untimeout": "Untimeout a user.",
+    "prefix": "Change the prefix of bot.",
+    "purge": "Delete the amount of messages given by the user",
+    "logs": "Set the logs channel",
+    "warn": "Give user a warning",
+    "resetwarns": "Remove all warnings of a user",
+    "checkwarns": "See how many warns a user have",
+    "lock": "lock the channel so users can't chat there",
+    "unlock": "unlock the channel so users can chat there",
+    "hide": "hide the channel so users can't see that channel",
+    "unhide": "unhide the channel so users can see that channel",
+    "role": "Add or remove a role from the user"
+  },
+  "Invites": {
+    "invites": "See the invites of a user.",
+    "invited": "Check the list of users the user has invited.",
+    "whoinvited": "See who has invited the user.",
+    "resetinvites": "Reset the invites of a user.",
+    "addinvites": "Add invites to the user.",
+    "subinvites": "Subtract invites from the user."
+  },
+  "Fun": {
+    "pat": "Pat someone",
+    "bully": "Bully someone",
+    "kill": "Kill someone not irl :-:"
+  }
+}
