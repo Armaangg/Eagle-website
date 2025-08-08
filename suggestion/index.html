@@ -1,24 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Eagle - Invite</title>
-    <style>
-        body {
-            color: gold;
-            background-color: black;
-            align-items: center;
-            display: flex;
-            padding-top: 80px;
-            min-height: 70vh;
-            padding: 5vw;
-            justify-content: center;
-            flex-direction: column;
-            text-align: center;
-            cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, auto;
-        }
-        button {
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eagle - Suggestion</title>
+  <style>
+      * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: black;
+      color: gold;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 70vh;
+      padding: 5vw;
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, auto;
+      padding-top: 80px;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: clamp(1rem, 3vw, 1.5rem);
+      max-width: 90%;
+      margin-bottom: 2rem;
+    }
+
+    button {
       display: inline-block;
       padding: 0.9em 1.7em;
       background-color: gold;
@@ -31,7 +47,34 @@
       cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, pointer;
       z-index: 8;
     }
-    .topbar {
+    .button {
+      display: inline-block;
+      padding: 0.9em 1.7em;
+      background-color: gold;
+      color: black;
+      text-decoration: none;
+      border-radius: 0.5em;
+      font-weight: bold;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      transition: background-color 0.3s ease;
+      cursor: url('https://i.ibb.co/8nXnxD6r/New-Project-58-9-C5-DF37.png') 0 0, pointer;
+      z-index: 8;
+    }
+
+    a:hover {
+      background-color: #e6c200;
+    }
+    .img{
+        pointer-events: none;
+        height: 100px;
+        border: 3px solid gold;
+        border-radius: 50px;
+        padding: 10px;
+        box-shadow: 0 0 30px gold;
+    }
+
+
+.topbar {
   display: flex;
   background: #111;
   color: white;
@@ -64,7 +107,6 @@
     font-size: 20px;
     font-weight: bold;
     top: 10px;
-    color: gold;
 }
 
 .hamburger {
@@ -118,15 +160,24 @@
 .sidemenu a:hover {
   background: #444;
 }
-.img{
-        pointer-events: none;
-        height: 80px;
-        border: 3px solid gold;
-        border-radius: 50px;
-        padding: 10px;
-        box-shadow: 0 0 30px gold;
-    }
-    </style>
+span {
+    color: gold;
+}
+input {
+    background-color: gold;
+    min-height: 30px;
+    border-radius: 10px;
+}
+textarea {
+    background-color: gold;
+    min-height: 30px;
+    border-radius: 10px;
+    padding-top: 10px;
+}
+.file2 {
+    display: none;
+}
+  </style>
 </head>
 <body>
     <div class="topbar">
@@ -140,21 +191,63 @@
 <div class="sidemenu" id="menu">
     <br>
   <button onclick="btn('/')">Home</button>
-  <button style="box-shadow: 0 0 20px gold;">Invite</button>
+  <button onclick="btn('/invite')">Invite</button>
   <button onclick="btn('/status')">Status</button>
   <button onclick="btn('/support')">Support</button>
   <button onclick="btn('/team')">Team</button>
 <button onclick="btn('/commands')">Commands</button>
-<button onclick="btn('/suggestion')">Suggestion</button>
+<button style="box-shadow: 0 0 20px gold;">Suggestion</button>
 </div>
-<img class="img" src="https://i.ibb.co/sf7YQpM/New-Project-62-CE20679.png" alt="EAGLE LOGO">
-<br>
-<br>
-<h1>Invite Eagle</h1>
-<p>Used in <span id="servers">many</span> servers</p>
-<h5>Invite Eagle Now!</h5>
-    <button onclick="btn('https://discord.com/oauth2/authorize?client_id=1333783139667017761')">Invite Eagle</button>
-    
+  <h2>Submit a New Suggestion</h2>
+  <form id="suggestionForm">
+    <label>
+      Title:
+      <br>
+      <input type="text" name="title" required>
+    </label>
+    <br><br>
+    <label>
+      Description:
+      <br>
+      <textarea name="description" required></textarea>
+    </label>
+    <br><br>
+    <label class="button" for="fileinput">
+      Upload Attachment (optional)
+      
+    </label>
+    <input id="fileinput"class="file2" type="file" name="file">
+    <br><br>
+    <button type="submit">Submit</button>
+  </form>
+
+  <p id="status"></p>
+
+  <script>
+    document.getElementById("suggestionForm").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch("https://eagle3.armaanop589.workers.dev/", {
+          method: "POST",
+          
+          body: formData,
+        });
+
+        const status = document.getElementById("status");
+        if (response.ok) {
+          status.innerText = "✅ Suggestion submitted successfully!";
+        } else {
+          const text = await response.text();
+          status.innerText = `❌ Error: ${response.status} – ${text}`;
+        }
+      } catch (err) {
+        document.getElementById("status").innerText = "❌ Network error: " + err.message;
+      }
+    });
+  </script>
   <script>
 function btn(url) {
       const gifContainer = document.createElement("div");
@@ -177,12 +270,6 @@ function btn(url) {
       }, 5000);
     }
   </script>
-  <script>
-  function toggleMenu() {
-    const menu = document.getElementById('menu');
-    menu.style.right = menu.style.right === '0px' ? '-250px' : '0px';
-  }
-</script>
 <script>
 (function () {
   let img;
@@ -249,27 +336,10 @@ function btn(url) {
 })();
 </script>
 <script>
-async function fetchServerCount() {
-  const url = "https://eagle.armaanop589.workers.dev/";
-
-  try {
-    const response = await fetch(url, {
-      method: "GET",
-
-    });
-
-    if (!response.ok) throw new Error("Failed to fetch server count");
-
-    const data = await response.json();
-    document.getElementById("servers").innerText = data.server_count || "N/A";
-  } catch (error) {
-    console.error("Error fetching server count:", error);
-    document.getElementById("servers").innerText = "many";
+  function toggleMenu() {
+    const menu = document.getElementById('menu');
+    menu.style.right = menu.style.right === '0px' ? '-250px' : '0px';
   }
-}
-
-fetchServerCount();
 </script>
-  
 </body>
 </html>
