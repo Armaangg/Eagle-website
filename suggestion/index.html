@@ -224,30 +224,33 @@ textarea {
   <p id="status"></p>
 
   <script>
-    document.getElementById("suggestionForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
+document.getElementById("suggestionForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-      try {
-        const response = await fetch("https://eagle3.armaanop589.workers.dev/", {
-          method: "POST",
-          
-          body: formData,
-        });
+  const form = e.target;
+  const formData = new FormData(form);
 
-        const status = document.getElementById("status");
-        if (response.ok) {
-          status.innerText = "✅ Suggestion submitted successfully!";
-        } else {
-          const text = await response.text();
-          status.innerText = `❌ Error: ${response.status} – ${text}`;
-        }
-      } catch (err) {
-        document.getElementById("status").innerText = "❌ Network error: " + err.message;
-      }
+  try {
+    const response = await fetch("https://eagle3.armaanop589.workers.dev/", {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+      },
+      body: formData
     });
-  </script>
+
+    const status = document.getElementById("status");
+    if (response.ok) {
+      status.innerText = "✅ Suggestion submitted successfully!";
+    } else {
+      const text = await response.text();
+      status.innerText = `❌ Error: ${response.status} – ${text}`;
+    }
+  } catch (err) {
+    document.getElementById("status").innerText = "❌ Network error: " + err.message;
+  }
+});
+</script>
   <script>
 function btn(url) {
       const gifContainer = document.createElement("div");
