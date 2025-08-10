@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Eagle - Suggestion</title>
+  <title>Eagle - Bug</title>
   <style>
     * {
       box-sizing: border-box;
@@ -379,12 +379,12 @@
     <button onclick="btn('/support')">Support</button>
     <button onclick="btn('/team')">Team</button>
     <button onclick="btn('/commands')">Commands</button>
-    <button onclick="btn('/bug')">Bug</button>
-    <button style="box-shadow: 0 0 20px gold;">Suggestion</button>
+    <button style="box-shadow: 0 0 20px gold;">Bug</button>
+    <button onclick="btn('/suggestion')">Suggestion</button>
   </div>
 
-  <h2>Submit a New Suggestion</h2>
-  <form id="suggestionForm" autocomplete="off">
+  <h2>Submit a New Bug</h2>
+  <form id="bugForm" autocomplete="off">
     <label>
       Title:<br />
       <input type="text" name="title" required />
@@ -410,7 +410,7 @@
   </div>
 
   <div id="submittedPopup" class="popup">
-    ✅ Suggestion submitted successfully!
+    ✅ Bug submitted successfully!
     <button class="close-btn" aria-label="Close">&times;</button>
   </div>
 
@@ -458,6 +458,7 @@
     }
 
     
+
     // Attachments handling
     const attachmentsContainer = document.getElementById("attachmentsContainer");
     const addAttachmentBtn = document.getElementById("addAttachmentBtn");
@@ -520,14 +521,14 @@
     });
 
     // Main form submit handler
-    document.getElementById("suggestionForm").addEventListener("submit", async function (e) {
+    document.getElementById("bugForm").addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const status = document.getElementById("status");
       status.textContent = "";
 
       // Rate limit check
-      const lastSubmitted = getCookie("lastSuggestionTime");
+      const lastSubmitted = getCookie("lastBugTime");
       if (lastSubmitted) {
         const lastTime = parseInt(lastSubmitted, 10);
         const now = Date.now();
@@ -553,7 +554,7 @@
       const fileInputs = Array.from(attachmentsContainer.querySelectorAll('input[type="file"]'));
 
       // Helper function to send one suggestion POST request
-      async function sendSuggestion(currTitle, currDescription, file) {
+      async function sendBug(currTitle, currDescription, file) {
         const formData = new FormData();
         formData.append("title", currTitle);
         formData.append("description", currDescription);
@@ -561,7 +562,7 @@
           formData.append("file", file);
         }
 
-        const response = await fetch("https://eagle3.armaanop589.workers.dev/", {
+        const response = await fetch("https://eagle3.armaanop589.workers.dev/bug", {
           method: "POST",
           headers: {
             Accept: "application/json",
@@ -579,10 +580,10 @@
         // First request - main title + description + first attachment or no attachment
         if (fileInputs.length === 0) {
           // No attachments, send single request
-          await sendSuggestion(title, description, null);
+          await sendBug(title, description, null);
         } else {
           // Send first attachment with main title
-          await sendSuggestion(title, description, fileInputs[0].files[0]);
+          await sendBug(title, description, fileInputs[0].files[0]);
 
           // Send remaining attachments one by one with modified titles
           const suffixes = ["Second", "Third", "Fourth", "Fifth", "Sixth", "Seventh", "Eighth", "Ninth", "Tenth"];
@@ -603,14 +604,14 @@
         status.textContent = "";
 
         // Reset rate limit cookie
-        setCookie("lastSuggestionTime", Date.now(), 5);
+        setCookie("lastBugTime", Date.now(), 5);
       } catch (error) {
         submittingPopup.classList.remove("show");
         status.textContent = `❌ Submission failed: ${error.message}`;
       }
     });
 
-  
+    
   </script>
   <script>
 (function () {

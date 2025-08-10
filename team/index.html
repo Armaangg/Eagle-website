@@ -206,6 +206,7 @@ button {
   <button onclick="btn('/support')">Support</button>
   <button style="box-shadow: 0 0 20px gold;">Team</button>
 <button onclick="btn('/commands')">Commands</button>
+<button onclick="btn('/bug')">Bug</button>
 <button onclick="btn('/suggestion')">Suggestion</button>
 </div>
 <br>
@@ -326,25 +327,25 @@ button {
 </script>
 <script>
 function btn(url) {
-      const gifContainer = document.createElement("div");
-      gifContainer.style.position = "fixed";
-      gifContainer.style.top = "10%";
-      gifContainer.style.left = "0%";
-      gifContainer.style.transform = "translate(-50%, -50%)";
-      gifContainer.style.transform = "scale(0.8)";
-      gifContainer.style.pointerEvents = "none";
-      gifContainer.style.zIndex = "999999";
+  const gifContainer = document.createElement("div");
+  gifContainer.style.position = "fixed";
+  gifContainer.style.top = "50%";
+  gifContainer.style.left = "50%";
+  gifContainer.style.transform = "translate(-50%, -50%) scale(0.8)";
+  gifContainer.style.pointerEvents = "none";
+  gifContainer.style.zIndex = "999999";
 
-      const gif = document.createElement("img");
-      gif.src = "https://i.ibb.co/LDdzYh24/ezgif-844ffdf8a067b8.gif";
-      gif.style.pointerEvents = "none";
-      gifContainer.appendChild(gif);
-      document.body.appendChild(gifContainer);
+  const gif = document.createElement("img");
+  gif.src = "https://i.ibb.co/LDdzYh24/ezgif-844ffdf8a067b8.gif";
+  gif.style.pointerEvents = "none";
 
-      setTimeout(() => {
-        window.location.href = url;
-      }, 5000);
-    }
-  </script>
+  gifContainer.appendChild(gif);
+  document.body.appendChild(gifContainer);
+
+  setTimeout(() => {
+    window.location.href = url;
+  }, 5000);
+}
+</script>
 </body>
 </html>
