@@ -223,30 +223,43 @@ textarea {
 
   <p id="status"></p>
 
-  <script>
+ <script>
 document.getElementById("suggestionForm").addEventListener("submit", async function (e) {
   e.preventDefault();
 
   const form = e.target;
   const formData = new FormData(form);
 
+  console.log("📤 Submitting suggestion form...");
+  for (let [key, value] of formData.entries()) {
+    console.log(`  ${key}:`, value);
+  }
+
   try {
+    console.log("🌐 Sending POST request to Cloudflare Worker...");
     const response = await fetch("https://eagle3.armaanop589.workers.dev/", {
       method: "POST",
       headers: {
         "Accept": "application/json",
+
       },
       body: formData
     });
 
+    console.log("🔍 Response status:", response.status, "OK:", response.ok);
+
     const status = document.getElementById("status");
+
     if (response.ok) {
+      console.log("✅ Suggestion submitted successfully!");
       status.innerText = "✅ Suggestion submitted successfully!";
     } else {
       const text = await response.text();
+      console.error(`❌ Error response [${response.status}]:`, text);
       status.innerText = `❌ Error: ${response.status} – ${text}`;
     }
   } catch (err) {
+    console.error("🚨 Network error:", err);
     document.getElementById("status").innerText = "❌ Network error: " + err.message;
   }
 });
