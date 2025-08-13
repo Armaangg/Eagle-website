@@ -36,7 +36,8 @@
     "unlock": "Unlock The Channel So Users Can Chat There",
     "hide": "Hide The Channel So Users Can't See That Channel",
     "unhide": "Unhide The Channel So Users Can See That Channel",
-    "role": "Add Or Remove A Role From The User"
+    "role": "Add Or Remove A Role From The User",
+    "roleall": "Add A Role To Everyone."
   },
   "Invites": {
     "invites": "See The Invites Of A User.",
