@@ -50,7 +50,8 @@
   "Fun": {
     "pat": "Pat Someone",
     "bully": "Bully Someone",
-    "kill": "Kill Someone Not Irl :-:"
+    "kill": "Kill Someone Not Irl :-:",
+    "akinator": "Start A Akinator Game."
   },
   "Ticket": {
     "ticket_panel create": "Create A New Ticket Panel With Custom Embed And Buttons",
